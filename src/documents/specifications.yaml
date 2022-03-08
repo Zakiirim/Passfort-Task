@@ -1,0 +1,177 @@
+openapi: 3.0.1
+info:
+  title: Documents API
+  description: API to retrieve/create documents revisions.
+  version: 1.0.0
+tags:
+  - name: Retrieve Revisions
+  - name: Create Revisions
+paths:
+  /documents:
+    get:
+      tags:
+        - Retrieve Revisions
+      summary: Returns a list of availables titles.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  title:
+                    type: string
+                    maxLength: 50
+                title: string
+                example: [
+                  {title: "example1"},
+                  {title: "example2"},
+                  {title: "example3"}
+                ]
+
+  /documents/{title}:
+    get:
+      tags:
+        - Retrieve Revisions
+      summary: Returns a list of availables revisions for a document.
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: string
+            maxLength: 50
+            example:
+              thisisatitleexample
+          required: true
+          description: Title of the review to retrieve.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  content:
+                    type: string
+                    example: content of the revision
+                  revision:
+                    type: string
+                    format: uuid
+                  timestamp:
+                    type: string
+                    format: date-time
+                  title:
+                    type: string
+                    example: same title as query string parameter.
+                    maxLength: 50
+    post:
+      tags:
+        - Create Revisions
+      summary: Create a new revision of the document.
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: string
+            maxLength: 50
+            example:
+              thisisatitleexample
+          required: true
+          description: Title of the review to retrieve.
+      responses:
+        '201':
+          description: CREATED
+          content:
+            application/json:
+              schema:
+                properties:
+                  content:
+                    type: string
+                    example: content of the new revision
+                  revision:
+                    type: string
+                    format: uuid
+                  timestamp:
+                    type: string
+                    format: date-time
+
+  /documents/{title}/{timestamp}:
+    get:
+      tags:
+        - Retrieve Revisions
+      summary: Returns the latest revision before the timestamp.
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: string
+            maxLength: 50
+            example:
+              thisisatitleexample
+          required: true
+          description: Title of the review to retrieve.
+        - in: path
+          name: timestamp
+          schema:
+            type: string
+            format: date-time
+            example:
+              2022-03-08T10:48:48.724Z
+          required: true
+          description: Latest datetime of the review to fetch. You can also use a date and the time will be interpreted as midnight, so if you send timestamp=2022-03-08 it will be interpreted as 2022-03-08T00:00:00.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  content:
+                    type: string
+                    example: content of the revision
+                  revision:
+                    type: string
+                    format: uuid
+                  timestamp:
+                    type: string
+                    format: date-time
+                  title:
+                    type: string
+                    example: same title as query string parameter.
+                    maxLength: 50
+
+  /documents/{title}/latest:
+    get:
+      tags:
+        - Retrieve Revisions
+      summary: Returns the latest revision of the document.
+      parameters:
+        - in: path
+          name: title
+          schema:
+            type: string
+            maxLength: 50
+            example:
+              thisisatitleexample
+          required: true
+          description: Title of the review to retrieve.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                properties:
+                  content:
+                    type: string
+                    example: content of the revision
+                  revision:
+                    type: string
+                    format: uuid
+                  timestamp:
+                    type: string
+                    format: date-time
+                  title:
+                    type: string
+                    example: same title as query string parameter.
+                    maxLength: 50
